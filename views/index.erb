@@ -9,7 +9,19 @@
 </head>
 <body>
     <h1 class="title">Hangman</h1>
+    <p>Answer: <%= answer %></p>
 
+    <form method="POST" action="round">
+        <input type="text" placeholder="Guess a letter" name="guess">
+        <input class="submit-btn" type="submit" placeholder="" method>
+    </form>
+    <div class="guesses"><%= "Guesses Left: #{guesses}" %></div>
     <div class="char-slots"></div>
+    <p class="used-letters"> used_letters: <%= used_letters.inspect.to_s %> </p>
+    <% if error_msg %>
+        <div class="error-msg">You've already used this letter or your guess is invalid</div>
+    <% end %>
+
+
 </body>
 </html>
