@@ -7,7 +7,7 @@ class GameController
     attr_accessor :guesses, :user_word, :answer, :used_letters
     def initialize
         @guesses = 0
-        @user_word = ''
+        @user_word = []
         @answer = ''
         @used_letters = []
     end
@@ -27,7 +27,7 @@ class GameController
     def newGame
         @answer = selectWord()
         @guesses = @answer.length + 2
-        @user_word = @user_word.rjust(@answer.length, '_').split('')
+        @user_word = ''.rjust(@answer.length, '_').split('')
     end
 
     def selectWord
@@ -41,7 +41,6 @@ class GameController
         }
         return suitable_words[rand(suitable_words.length)]
     end
-
 
 
     def play(guess)
@@ -61,50 +60,70 @@ class GameController
 $gc = GameController.new
 $gc.newGame()
 get '/' do
-
-
     erb :index, locals:
     {
         used_letters: $gc.used_letters,
         answer: $gc.answer,
         guesses: $gc.guesses,
-        error_msg: false
+        error_msg: false,
+        user_word: $gc.user_word
     }
 end
 
 post '/round' do
     guess = params['guess'].to_s.downcase
+    if $gc.guesses > 0
+        if $gc.validGuess?(guess)
+            $gc.play(guess)
+            redirect to('/win') if $gc.user_word.join('').downcase == $gc.answer.downcase
 
-    if $gc.validGuess?(guess)
-        $gc.play(guess)
-        erb :index, locals:
-        {
-            used_letters: $gc.used_letters,
-            answer: $gc.answer,
-            guesses: $gc.guesses,
-            error_msg: false
-        }
+            erb :index, locals: {
+                used_letters: $gc.used_letters,
+                answer: $gc.answer,
+                guesses: $gc.guesses,
+                error_msg: false,
+                user_word: $gc.user_word}
+        else
+            erb :index, locals:
+            {
+                used_letters: $gc.used_letters,
+                answer: $gc.answer,
+                guesses: $gc.guesses,
+                error_msg: true,
+                user_word: $gc.user_word
+            }
+        end
     else
-        erb :index, locals:
-        {
-            used_letters: $gc.used_letters,
-            answer: $gc.answer,
-            guesses: $gc.guesses,
-            error_msg: true
+        erb :guess_word, locals: {
+            answer: $gc.answer
         }
     end
+
 end
 
+
+
     post '/guess' do
-        gussed_word = params['guessed_word'].to_s().downcase().strip()
-        if gussed_word == $gc.answer
+        guessed_word = params['guessed_word'].to_s().downcase().strip()
+
+
+
+        if guessed_word == $gc.answer.downcase()
             erb :guess_word, locals: {
-                answer: true
+                answer: true,
+                correct_word: $gc.answer
             }
         else
             erb :guess_word, locals: {
-                answer: false
+                answer: false,
+                correct_word: $gc.answer,
+                guessed_word: guessed_word
             }
         end
 
+
     end
+
+get '/win' do
+        erb :win
+end

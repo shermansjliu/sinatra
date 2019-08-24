@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="main.css">
+    <title>Document</title>
+</head>
+<body>
+    <h1 class="title">Hangman</h1>
+    <form method="POST" action="guess">
+        <input type="text" placeholder="what is your guess" name="guessed_word">
+        <input class="submit-btn" type="submit" placeholder="" method>
+        <% if answer %>
+            <p>You Gussed Right! The word is <%= correct_word.capitalize() %> </p>
+        <% else %>
+            <p>Wrong answer, the word you were trying to guess was: <%= correct_word.capitalize() %></p>
+        <% end %>
+    </form>
+
+
+</body>
+</html>
