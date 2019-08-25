@@ -4,25 +4,31 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="stylesheet" href="main.css">
     <title>Document</title>
+    <link rel="stylesheet" href="style.css" />
+    <style>
+        .user-word {
+            letter-spacing: 10px;
+            margin-bottom: 20px;
+        }
+    </style>
+
 </head>
 <body>
     <h1 class="title">Hangman</h1>
     <p>Answer: <%= answer %></p>
 
-    <form method="POST" action="round">
-        <input type="text" placeholder="Guess a letter" name="guess">
+    <form class="guess-form" method="POST" action="round">
+        <input class="guess-input" type="text" placeholder="Guess a letter" name="guess">
         <input class="submit-btn" type="submit" placeholder="" method>
     </form>
+    <div class="user-word"><%= user_word.join("") %></div>
     <div class="guesses"><%= "Guesses Left: #{guesses}" %></div>
-    <div class="char-slots"></div>
-
     <p class="used-letters"> used_letters: <%= used_letters.inspect.to_s %> </p>
     <% if error_msg %>
         <div class="error-msg">You've already used this letter or your guess is invalid</div>
     <% end %>
-    <div class="user-word"><%= user_word.join("") %></div>
+
 
 </body>
 </html>

@@ -3,6 +3,7 @@ require 'sinatra/reloader'
 
 
 
+
 class GameController
     attr_accessor :guesses, :user_word, :answer, :used_letters
     def initialize
@@ -11,13 +12,12 @@ class GameController
         @answer = ''
         @used_letters = []
     end
-
+#
     public
     def validGuess?(guess)
-        if !@used_letters.include?(guess)  and guess =~ /[A-Za-z]/
+        if !@used_letters.include?(guess)  and guess =~ /[A-Za-z]/ and guess.length == 1
             return true
         else
-            print "hi"
             return false
 
         end
@@ -60,6 +60,7 @@ class GameController
 $gc = GameController.new
 $gc.newGame()
 get '/' do
+
     erb :index, locals:
     {
         used_letters: $gc.used_letters,
@@ -71,7 +72,7 @@ get '/' do
 end
 
 post '/round' do
-    guess = params['guess'].to_s.downcase
+    guess = params['guess'].to_s.downcase()
     if $gc.guesses > 0
         if $gc.validGuess?(guess)
             $gc.play(guess)
@@ -105,8 +106,6 @@ end
 
     post '/guess' do
         guessed_word = params['guessed_word'].to_s().downcase().strip()
-
-
 
         if guessed_word == $gc.answer.downcase()
             erb :guess_word, locals: {

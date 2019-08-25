@@ -1,0 +1,24 @@
+body {
+    text-align: center;
+    background-color: blue;
+}
+
+.guess-form {
+    display: flex;
+    flex-direction: column;
+    width: 300px;
+    margin-left: auto;
+    margin-right: auto;
+}
+.guess-input {
+    padding: 10px;
+    text-align: center;
+}
+
+.user-word {
+    letter-spacing: 100px;
+    margin-bottom: 20px;
+}
+.guess-form input {
+    margin-bottom: 10px;
+}
